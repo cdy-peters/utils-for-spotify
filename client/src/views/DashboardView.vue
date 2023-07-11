@@ -10,7 +10,7 @@
         alt="Profile picture"
       />
       <div class="flex flex-col ml-4">
-        <p class="text-xl">{{ user.display_name }}</p>
+        <p class="text-xl">{{ user.name }}</p>
         <p class="text-lg text-gray-300">{{ user.id }}</p>
       </div>
     </div>
@@ -40,26 +40,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useSpotifyStore } from "@/stores/spotify";
 import { getLargestImage, getArtistString } from "@/utils/spotify";
-import { getCurrentUser, getUserPlayback } from "@/utils/api";
+import { getUserPlayback } from "@/utils/api";
 
 const authStore = useAuthStore();
-const accessToken = authStore.getAccessToken;
+const spotifyStore = useSpotifyStore();
 
-let user: any = ref(null);
+const accessToken = authStore.getAccessToken;
+const user = spotifyStore.user;
+
 let playback: any = ref(null);
 
 onMounted(async () => {
-  try {
-    const [userData, playbackData] = await Promise.all([
-      getCurrentUser(accessToken),
-      getUserPlayback(accessToken),
-    ]);
-
-    user.value = userData;
-    playback.value = playbackData;
-  } catch (err) {
-    console.log(err);
-  }
+  playback.value = await getUserPlayback(accessToken);
 });
 </script>
