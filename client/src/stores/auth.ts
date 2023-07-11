@@ -16,6 +16,9 @@ export const useAuthStore = defineStore("auth", {
     getExpiresIn: (state) => state.expiresIn,
   },
   actions: {
+    isLoggedIn() {
+      return this.accessToken !== "";
+    },
     login() {
       window.location.href = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${client_redirect_uri}`;
     },

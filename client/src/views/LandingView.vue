@@ -1,15 +1,6 @@
 <template>
-  <h2>Landing</h2>
-
-  <button @click="login">Login</button>
+  <div class="flex flex-col items-center">
+    <h1 class="mb-3 text-3xl font-bold">Utils for Spotify</h1>
+    <h2 class="mb-3 text-2xl">Various utilities for Spotify</h2>
+  </div>
 </template>
-
-<script setup lang="ts">
-import { useAuthStore } from "@/stores/auth";
-
-const authStore = useAuthStore();
-
-const login = () => {
-  authStore.login();
-};
-</script>
