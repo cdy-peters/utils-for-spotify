@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white">
+  <header class="bg-black">
     <nav
       class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
       aria-label="Global"
@@ -10,7 +10,7 @@
       <div class="flex lg:hidden">
         <button
           type="button"
-          class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+          class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-100"
           @click="mobileMenuOpen = true"
         >
           <span class="sr-only">Open main menu</span>
@@ -25,7 +25,7 @@
           <a
             v-if="!item.dropdown"
             :href="item.href"
-            class="text-sm font-semibold leading-6 text-gray-900"
+            class="text-sm font-semibold leading-6 text-gray-100"
             >{{ item.name }}</a
           >
 
@@ -33,18 +33,20 @@
         </template>
       </PopoverGroup>
       <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a
+        <button
           v-if="authStore.isLoggedIn()"
           @click="logout"
-          class="text-sm font-semibold leading-6 text-gray-900"
-          >Log out</a
+          class="text-sm font-semibold leading-6 text-gray-100"
         >
-        <a
+          Log out
+        </button>
+        <button
           v-else
           @click="login"
-          class="text-sm font-semibold leading-6 text-gray-900"
-          >Log in <span aria-hidden="true">&rarr;</span></a
+          class="text-sm font-semibold leading-6 text-gray-100"
         >
+          Log in <span aria-hidden="true">&rarr;</span>
+        </button>
       </div>
     </nav>
 
@@ -56,13 +58,13 @@
     >
       <div class="fixed inset-0 z-10" />
       <DialogPanel
-        class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+        class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
       >
         <div class="flex items-center justify-between">
           <NavbarLogo />
           <button
             type="button"
-            class="-m-2.5 rounded-md p-2.5 text-gray-700"
+            class="-m-2.5 rounded-md p-2.5 text-gray-100"
             @click="mobileMenuOpen = false"
           >
             <span class="sr-only">Close menu</span>
@@ -76,7 +78,7 @@
                 <a
                   v-if="!item.dropdown"
                   :href="item.href"
-                  class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                  class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
                   >{{ item.name }}</a
                 >
 
@@ -84,18 +86,20 @@
               </template>
             </div>
             <div class="py-6">
-              <a
+              <button
                 v-if="authStore.isLoggedIn()"
                 @click="logout"
-                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >Log out</a
+                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
               >
-              <a
+                Log out
+              </button>
+              <button
                 v-else
                 @click="login"
-                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >Log in</a
+                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
               >
+                Log in
+              </button>
             </div>
           </div>
         </div>

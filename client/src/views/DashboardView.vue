@@ -1,7 +1,7 @@
 <template>
   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div
-      class="bg-gray-200 p-4 sm:rounded-lg flex flex-row items-center"
+      class="bg-gray-900 p-4 sm:rounded-lg flex flex-row items-center"
       v-if="user"
     >
       <img
@@ -11,11 +11,11 @@
       />
       <div class="flex flex-col ml-4">
         <p class="text-xl">{{ user.display_name }}</p>
-        <p class="text-lg">{{ user.id }}</p>
+        <p class="text-lg text-gray-300">{{ user.id }}</p>
       </div>
     </div>
 
-    <div class="bg-gray-200 p-4 sm:rounded-lg" v-if="playback">
+    <div class="bg-gray-900 p-4 sm:rounded-lg" v-if="playback">
       <p class="mb-3 text-xl font-semibold">
         {{ playback.is_playing ? "Currently playing: " : "Recently played: " }}
       </p>
@@ -28,7 +28,9 @@
         />
         <div class="flex flex-col ml-4">
           <p class="text-xl">{{ playback.item.name }}</p>
-          <p class="text-lg">{{ getArtistString(playback.item.artists) }}</p>
+          <p class="text-lg text-gray-300">
+            {{ getArtistString(playback.item.artists) }}
+          </p>
         </div>
       </div>
     </div>

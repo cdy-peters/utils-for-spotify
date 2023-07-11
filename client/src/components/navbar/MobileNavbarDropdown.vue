@@ -1,7 +1,7 @@
 <template>
   <Disclosure as="div" class="-mx-3" v-slot="{ open }">
     <DisclosureButton
-      class="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+      class="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
     >
       {{ item.name }}
       <ChevronDownIcon
@@ -15,7 +15,7 @@
         :key="subItem.name"
         as="a"
         :href="subItem.href"
-        class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+        class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
         >{{ subItem.name }}</DisclosureButton
       >
     </DisclosurePanel>
