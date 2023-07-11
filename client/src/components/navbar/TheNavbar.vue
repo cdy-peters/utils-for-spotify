@@ -25,7 +25,7 @@
           <a
             v-if="!item.dropdown"
             :href="item.href"
-            class="text-sm font-semibold leading-6 text-gray-100"
+            :class="getNavItemClass(item.name)"
             >{{ item.name }}</a
           >
 
@@ -36,14 +36,14 @@
         <button
           v-if="authStore.isLoggedIn()"
           @click="logout"
-          class="text-sm font-semibold leading-6 text-gray-100"
+          class="text-sm font-semibold leading-6 text-gray-100 px-3 py-2 rounded-md hover:bg-green-hover hover:text-white"
         >
           Log out
         </button>
         <button
           v-else
           @click="login"
-          class="text-sm font-semibold leading-6 text-gray-100"
+          class="text-sm font-semibold leading-6 text-gray-100 px-3 py-2 rounded-md hover:bg-green-hover hover:text-white"
         >
           Log in <span aria-hidden="true">&rarr;</span>
         </button>
@@ -78,7 +78,7 @@
                 <a
                   v-if="!item.dropdown"
                   :href="item.href"
-                  class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
+                  :class="getMobileNavItemClass(item.name)"
                   >{{ item.name }}</a
                 >
 
@@ -89,14 +89,14 @@
               <button
                 v-if="authStore.isLoggedIn()"
                 @click="logout"
-                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
+                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-white"
               >
                 Log out
               </button>
               <button
                 v-else
                 @click="login"
-                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-black"
+                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-100 hover:bg-green-hover hover:text-white"
               >
                 Log in
               </button>
@@ -110,6 +110,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+
 import { Dialog, DialogPanel, PopoverGroup } from "@headlessui/vue";
 import { Bars3Icon, HeartIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
@@ -131,8 +132,8 @@ const products = [
 ];
 
 const navigation = [
-  { name: "Dashboard", href: "/dashboard", active: true },
-  { name: "Tools", active: false, dropdown: products },
+  { name: "Dashboard", href: "/dashboard" },
+  { name: "Tools", dropdown: products },
 ];
 
 const mobileMenuOpen = ref(false);
@@ -144,5 +145,35 @@ const login = () => {
 const logout = () => {
   authStore.logout();
   router.push("/");
+};
+
+const getNavItemClass = (item: string) => {
+  return [
+    "rounded-md",
+    "px-3",
+    "py-2",
+    "text-sm",
+    "font-semibold",
+    "leading-6",
+    router.currentRoute.value.name === item.toLowerCase()
+      ? "bg-green text-black"
+      : "text-gray-300 hover:bg-green-hover hover:text-white",
+  ];
+};
+
+const getMobileNavItemClass = (item: string) => {
+  return [
+    "-mx-3",
+    "block",
+    "rounded-lg",
+    "px-3",
+    "py-2",
+    "text-base",
+    "font-semibold",
+    "leading-7",
+    router.currentRoute.value.name === item.toLowerCase()
+      ? "bg-green text-black"
+      : "text-gray-300 hover:bg-green-hover hover:text-white",
+  ];
 };
 </script>

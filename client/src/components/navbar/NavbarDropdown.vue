@@ -1,11 +1,9 @@
 <template>
   <Popover class="relative">
-    <PopoverButton
-      class="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-100"
-    >
+    <PopoverButton :class="getNavItemClass(item.dropdown)">
       {{ item.name }}
       <ChevronDownIcon
-        class="h-5 w-5 flex-none text-gray-100"
+        class="h-5 w-5 flex-none text-inherit"
         aria-hidden="true"
       />
     </PopoverButton>
@@ -28,11 +26,16 @@
             class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-900"
           >
             <div
-              class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-700 group-hover:bg-green-hover"
+              class="flex h-11 w-11 flex-none items-center justify-center rounded-lg"
+              :class="
+                subItem.name.toLowerCase() == router.currentRoute.value.name
+                  ? 'bg-green text-black'
+                  : 'bg-gray-700 text-gray-100 group-hover:bg-green-hover'
+              "
             >
               <component
                 :is="subItem.icon"
-                class="h-6 w-6 text-gray-300 group-hover:text-black"
+                class="h-6 w-6 group-hover:text-black text-inherit"
                 aria-hidden="true"
               />
             </div>
@@ -53,8 +56,29 @@
 </template>
 
 <script setup lang="ts">
+import router from "@/router";
+
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
+
+const getNavItemClass = (dropdown: any) => {
+  const dropdownNames = dropdown.map((item: any) => item.name.toLowerCase());
+
+  return [
+    "flex",
+    "items-center",
+    "gap-x-1",
+    "rounded-md",
+    "px-3",
+    "py-2",
+    "text-sm",
+    "font-semibold",
+    "leading-6",
+    dropdownNames.includes(router.currentRoute.value.name)
+      ? "bg-green text-black"
+      : "text-gray-300 hover:bg-green-hover hover:text-white",
+  ];
+};
 </script>
 
 <script lang="ts">
