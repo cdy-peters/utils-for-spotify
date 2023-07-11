@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 const client_id = "91c14e269ed8424484de48b50ee701bb";
 const client_redirect_uri = "http://localhost:5173/callback";
 const server_url = "http://localhost:3080";
+const scopes = ["user-read-playback-state", "user-read-recently-played"];
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -20,7 +21,15 @@ export const useAuthStore = defineStore("auth", {
       return this.accessToken !== "";
     },
     login() {
-      window.location.href = `https://accounts.spotify.com/authorize?client_id=${client_id}&response_type=code&redirect_uri=${client_redirect_uri}`;
+      const baseUrl = "https://accounts.spotify.com/authorize";
+      const params = new URLSearchParams({
+        client_id,
+        response_type: "code",
+        redirect_uri: client_redirect_uri,
+        scope: scopes.join(" "),
+      });
+      const url = `${baseUrl}?${params.toString()}`;
+      window.location.href = url;
     },
     logout() {
       this.accessToken = "";
