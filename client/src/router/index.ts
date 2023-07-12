@@ -3,6 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 
 import LandingView from "@/views/LandingView.vue";
 import DashboardView from "@/views/DashboardView.vue";
+import UnaddedTracksView from "@/views/UnaddedTracksView.vue";
 import CallbackView from "@/views/CallbackView.vue";
 
 const router = createRouter({
@@ -18,6 +19,12 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/unadded-tracks",
+      name: "unadded-tracks",
+      component: UnaddedTracksView,
       meta: { requiresAuth: true },
     },
     {

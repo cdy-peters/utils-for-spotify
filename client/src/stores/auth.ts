@@ -3,7 +3,12 @@ import { defineStore } from "pinia";
 const client_id = "91c14e269ed8424484de48b50ee701bb";
 const client_redirect_uri = "http://localhost:5173/callback";
 const server_url = "http://localhost:3080";
-const scopes = ["user-read-playback-state", "user-read-recently-played"];
+const scopes = [
+  "user-read-playback-state",
+  "user-read-recently-played",
+  "playlist-read-private",
+  "user-library-read",
+];
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({

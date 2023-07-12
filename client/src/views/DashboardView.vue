@@ -42,7 +42,7 @@ import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useSpotifyStore } from "@/stores/spotify";
 import { getLargestImage, getArtistString } from "@/utils/spotify";
-import { getUserPlayback } from "@/utils/api";
+import { getCurrentUserPlayback } from "@/utils/api";
 
 const authStore = useAuthStore();
 const spotifyStore = useSpotifyStore();
@@ -53,6 +53,6 @@ const user = spotifyStore.user;
 let playback: any = ref(null);
 
 onMounted(async () => {
-  playback.value = await getUserPlayback(accessToken);
+  playback.value = await getCurrentUserPlayback(accessToken);
 });
 </script>
