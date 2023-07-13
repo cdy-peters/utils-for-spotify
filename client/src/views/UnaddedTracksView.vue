@@ -3,22 +3,24 @@
     class="lg:w-3/5 bg-gray-900 mb-4 p-4 sm:rounded-lg justify-between m-auto"
   >
     <div>
-      <p class="text-xl font-semibold">Searching playlists for:</p>
-      <p class="text-lg truncate">
-        {{
-          savedTracks[savedTracks.length - 1]
-            ? savedTracks[savedTracks.length - 1].name
-            : ""
-        }}
-      </p>
-      <p class="text-md text-gray-300 mb-4 truncate">
-        {{
-          savedTracks[savedTracks.length - 1]
-            ? savedTracks[savedTracks.length - 1].artists
-            : ""
-        }}
-      </p>
-      <VProgressBar :value="percentCompletion" />
+      <p class="text-xl font-semibold">{{ stateMessage }}</p>
+      <div v-if="state === State.SEARCHING">
+        <p class="text-lg truncate">
+          {{
+            savedTracks[savedTracks.length - 1]
+              ? savedTracks[savedTracks.length - 1].name
+              : ""
+          }}
+        </p>
+        <p class="text-md text-gray-300 truncate">
+          {{
+            savedTracks[savedTracks.length - 1]
+              ? savedTracks[savedTracks.length - 1].artists
+              : ""
+          }}
+        </p>
+      </div>
+      <VProgressBar :value="percentCompletion" class="mt-4" />
     </div>
   </div>
 
@@ -30,7 +32,7 @@
       <p class="text-lg">{{ unaddedTracks.length }} tracks</p>
     </div>
     <div
-      class="divide-y divide-gray-700/20 py-2 px-2 h-[calc(100vh-401px)] overflow-y-auto"
+      class="h-[calc(100vh-437px)] divide-y divide-gray-700/20 py-2 px-2 overflow-y-auto"
     >
       <template v-if="unaddedTracks.length">
         <div v-for="track in unaddedTracks" :key="track.id">
@@ -76,17 +78,19 @@ import { getArtistString } from "@/utils/spotify";
 import VProgressBar from "@/components/VProgressBar.vue";
 import VSpinner from "@/components/VSpinner.vue";
 
-const State = {
-  SEARCHING: "SEARCHING",
-  DONE: "DONE",
-};
+enum State {
+  GETTING_PLAYLISTS = "GETTING_PLAYLISTS",
+  SEARCHING = "SEARCHING",
+  DONE = "DONE",
+}
 
 const authStore = useAuthStore();
 const spotifyStore = useSpotifyStore();
 
 const user = spotifyStore.user;
 
-const state = ref(State.SEARCHING);
+const state = ref(State.GETTING_PLAYLISTS);
+const stateMessage = ref("Getting your playlists");
 
 const totalSavedTracks = ref(0);
 const totalPlaylistTracks = ref(0);
@@ -103,8 +107,24 @@ let currPlaylist = 0;
 
 onMounted(async () => {
   await fetchPlaylists();
+  state.value = State.SEARCHING;
+
   await fetchSavedTracks();
   state.value = State.DONE;
+});
+
+watch(state, (newState) => {
+  switch (newState) {
+    case State.GETTING_PLAYLISTS:
+      stateMessage.value = "Getting your playlists";
+      break;
+    case State.SEARCHING:
+      stateMessage.value = "Searching for saved tracks in playlists";
+      break;
+    case State.DONE:
+      stateMessage.value = "Finished searching for saved tracks";
+      break;
+  }
 });
 
 watch([savedTracks, playlistTracks, totalPlaylistTracks], () => {
