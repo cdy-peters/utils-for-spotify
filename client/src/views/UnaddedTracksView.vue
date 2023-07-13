@@ -42,16 +42,26 @@
       <p class="text-lg">{{ unaddedTracks.length }} tracks</p>
     </div>
     <div
-      class="divide-y divide-gray-700/20 py-2 px-2 max-h-[calc(100vh-401px)] overflow-y-auto"
+      class="divide-y divide-gray-700/20 py-2 px-2 h-[calc(100vh-401px)] overflow-y-auto"
     >
-      <div v-for="track in unaddedTracks" :key="track.id">
-        <p class="text-lg">{{ track.name }}</p>
-        <p class="text-md text-gray-300">{{ track.artists }}</p>
+      <template v-if="unaddedTracks.length">
+        <div v-for="track in unaddedTracks" :key="track.id">
+          <p class="text-lg">{{ track.name }}</p>
+          <p class="text-md text-gray-300">{{ track.artists }}</p>
+        </div>
+      </template>
+      <div v-else-if="state === State.DONE">
+        <p class="text-lg text-center">
+          All saved tracks were found in playlists
+        </p>
+      </div>
+      <div v-else class="flex items-center justify-center h-full">
+        <TheSpinner />
       </div>
     </div>
     <div class="py-4">
       <button
-        :disabled="state !== State.DONE"
+        :disabled="state !== State.DONE || unaddedTracks.length === 0"
         class="bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:bg-green"
         @click="addTracks"
       >
@@ -74,6 +84,8 @@ import {
 import { useAuthStore } from "@/stores/auth";
 import { useSpotifyStore } from "@/stores/spotify";
 import { getArtistString } from "@/utils/spotify";
+
+import TheSpinner from "@/components/TheSpinner.vue";
 
 const State = {
   SEARCHING: "SEARCHING",
