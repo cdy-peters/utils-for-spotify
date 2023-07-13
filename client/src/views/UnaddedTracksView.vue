@@ -95,7 +95,6 @@ const State = {
 const authStore = useAuthStore();
 const spotifyStore = useSpotifyStore();
 
-const accessToken = authStore.getAccessToken;
 const user = spotifyStore.user;
 
 const state = ref(State.SEARCHING);
@@ -122,7 +121,7 @@ const fetchPlaylists = async () => {
   let data;
 
   do {
-    data = await getCurrentUserPlaylists(accessToken, i);
+    data = await getCurrentUserPlaylists(authStore.getAccessToken, i);
 
     const filteredPlaylists = data.items
       .filter((item: any) => {
@@ -147,7 +146,7 @@ const fetchSavedTracks = async () => {
   let data;
 
   do {
-    data = await getCurrentUserSavedTracks(accessToken, i);
+    data = await getCurrentUserSavedTracks(authStore.getAccessToken, i);
 
     if (i === 0) totalSavedTracks.value = data.total;
 
@@ -175,7 +174,7 @@ const fetchSavedTracks = async () => {
 const fetchPlaylistTracks = async (trackId: string) => {
   if (!next) {
     const data = await getPlaylistItems(
-      accessToken,
+      authStore.getAccessToken,
       playlists.value[currPlaylist],
       0
     );
@@ -199,7 +198,7 @@ const fetchPlaylistTracks = async (trackId: string) => {
   }
 
   while (next) {
-    const data = await getNextPlaylistItems(accessToken, next);
+    const data = await getNextPlaylistItems(authStore.getAccessToken, next);
     const trackIds = data.items.map((item: any) => item.track.id);
     const temp = playlistTracks.value.size;
     playlistTracks.value = new Set([...playlistTracks.value, ...trackIds]);
@@ -232,8 +231,8 @@ const addTracks = async () => {
   const trackIds = unaddedTracks.value.map(
     (track) => `spotify:track:${track.id}`
   );
-  const playlist = await createPlaylist(accessToken, user.id, "Unadded Tracks");
+  const playlist = await createPlaylist(authStore.getAccessToken, user.id, "Unadded Tracks");
 
-  await addItemsToPlaylist(accessToken, playlist.id, trackIds);
+  await addItemsToPlaylist(authStore.getAccessToken, playlist.id, trackIds);
 };
 </script>
