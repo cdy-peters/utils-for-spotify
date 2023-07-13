@@ -19,7 +19,7 @@
         }}
       </p>
     </div>
-    
+
     <div>
       <p class="text-lg">
         {{ currPlaylist }} of {{ playlists.length }} playlists searched
@@ -50,8 +50,10 @@
       </div>
     </div>
     <div class="py-4">
-      <button disabled
-        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-20 disabled:bg-green-500"
+      <button
+        :disabled="state !== State.DONE"
+        class="bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:bg-green"
+        @click="addTracks"
       >
         Add tracks to a new playlist
       </button>
@@ -66,16 +68,25 @@ import {
   getCurrentUserSavedTracks,
   getPlaylistItems,
   getNextPlaylistItems,
+  createPlaylist,
+  addItemsToPlaylist,
 } from "@/utils/api";
 import { useAuthStore } from "@/stores/auth";
 import { useSpotifyStore } from "@/stores/spotify";
 import { getArtistString } from "@/utils/spotify";
+
+const State = {
+  SEARCHING: "SEARCHING",
+  DONE: "DONE",
+};
 
 const authStore = useAuthStore();
 const spotifyStore = useSpotifyStore();
 
 const accessToken = authStore.getAccessToken;
 const user = spotifyStore.user;
+
+const state = ref(State.SEARCHING);
 
 const totalSavedTracks = ref(0);
 const totalPlaylistTracks = ref(0);
@@ -85,9 +96,13 @@ const savedTracks = ref<{ id: string; name: string; artists: string }[]>([]);
 const playlistTracks = ref(new Set());
 const unaddedTracks = ref<{ id: string; name: string; artists: string }[]>([]);
 
+let next: string | null = null;
+let currPlaylist = 0;
+
 onMounted(async () => {
   await fetchPlaylists();
-  fetchSavedTracks();
+  await fetchSavedTracks();
+  state.value = State.DONE;
 });
 
 const fetchPlaylists = async () => {
@@ -114,9 +129,6 @@ const fetchPlaylists = async () => {
     i++;
   } while (data.next);
 };
-
-let next: string | null = null;
-let currPlaylist = 0;
 
 const fetchSavedTracks = async () => {
   let i = 0;
@@ -202,5 +214,14 @@ const fetchPlaylistTracks = async (trackId: string) => {
 
 const checkPlaylistTracks = (trackId: string, tracks: string[]) => {
   return tracks.includes(trackId);
+};
+
+const addTracks = async () => {
+  const trackIds = unaddedTracks.value.map(
+    (track) => `spotify:track:${track.id}`
+  );
+  const playlist = await createPlaylist(accessToken, user.id, "Unadded Tracks");
+
+  await addItemsToPlaylist(accessToken, playlist.id, trackIds);
 };
 </script>

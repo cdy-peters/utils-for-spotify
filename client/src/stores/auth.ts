@@ -8,6 +8,7 @@ const scopes = [
   "user-read-recently-played",
   "playlist-read-private",
   "user-library-read",
+  "playlist-modify-public"
 ];
 
 export const useAuthStore = defineStore("auth", {
