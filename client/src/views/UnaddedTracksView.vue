@@ -1,8 +1,8 @@
 <template>
   <div
-    class="lg:w-3/5 bg-gray-900 mb-4 p-4 sm:rounded-lg flex flex-row justify-between gap-x-4 m-auto"
+    class="lg:w-3/5 bg-gray-900 mb-4 p-4 sm:rounded-lg justify-between m-auto"
   >
-    <div class="w-5/12">
+    <div>
       <p class="text-xl font-semibold">Searching playlists for:</p>
       <p class="text-lg truncate">
         {{
@@ -11,26 +11,14 @@
             : ""
         }}
       </p>
-      <p class="text-md text-gray-300 truncate">
+      <p class="text-md text-gray-300 mb-4 truncate">
         {{
           savedTracks[savedTracks.length - 1]
             ? savedTracks[savedTracks.length - 1].artists
             : ""
         }}
       </p>
-    </div>
-
-    <div>
-      <p class="text-lg">
-        {{ currPlaylist }} of {{ playlists.length }} playlists searched
-      </p>
-      <p class="text-lg">
-        {{ savedTracks.length }} of {{ totalSavedTracks }} saved tracks searched
-      </p>
-      <p class="text-lg">
-        {{ playlistTracks.size }} of {{ totalPlaylistTracks }} unique playlist
-        tracks retrieved
-      </p>
+      <VProgressBar :value="percentCompletion" />
     </div>
   </div>
 
@@ -56,10 +44,10 @@
         </p>
       </div>
       <div v-else class="flex items-center justify-center h-full">
-        <TheSpinner />
+        <VSpinner />
       </div>
     </div>
-    <div class="py-4">
+    <div class="py-4 max-[425px]:text-center">
       <button
         :disabled="state !== State.DONE || unaddedTracks.length === 0"
         class="bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:bg-green"
@@ -72,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import {
   getCurrentUserPlaylists,
   getCurrentUserSavedTracks,
@@ -85,7 +73,8 @@ import { useAuthStore } from "@/stores/auth";
 import { useSpotifyStore } from "@/stores/spotify";
 import { getArtistString } from "@/utils/spotify";
 
-import TheSpinner from "@/components/TheSpinner.vue";
+import VProgressBar from "@/components/VProgressBar.vue";
+import VSpinner from "@/components/VSpinner.vue";
 
 const State = {
   SEARCHING: "SEARCHING",
@@ -107,6 +96,8 @@ const savedTracks = ref<{ id: string; name: string; artists: string }[]>([]);
 const playlistTracks = ref(new Set());
 const unaddedTracks = ref<{ id: string; name: string; artists: string }[]>([]);
 
+const percentCompletion = ref(0);
+
 let next: string | null = null;
 let currPlaylist = 0;
 
@@ -114,6 +105,14 @@ onMounted(async () => {
   await fetchPlaylists();
   await fetchSavedTracks();
   state.value = State.DONE;
+});
+
+watch([savedTracks, playlistTracks, totalPlaylistTracks], () => {
+  percentCompletion.value = Math.round(
+    ((savedTracks.value.length + playlistTracks.value.size) /
+      (totalSavedTracks.value + totalPlaylistTracks.value)) *
+      100
+  );
 });
 
 const fetchPlaylists = async () => {
@@ -156,7 +155,7 @@ const fetchSavedTracks = async () => {
         name: item.track.name,
         artists: getArtistString(item.track.artists),
       };
-      savedTracks.value.push(track);
+      savedTracks.value = [...savedTracks.value, track];
 
       if (playlistTracks.value.has(track.id)) {
         continue;
@@ -231,7 +230,11 @@ const addTracks = async () => {
   const trackIds = unaddedTracks.value.map(
     (track) => `spotify:track:${track.id}`
   );
-  const playlist = await createPlaylist(authStore.getAccessToken, user.id, "Unadded Tracks");
+  const playlist = await createPlaylist(
+    authStore.getAccessToken,
+    user.id,
+    "Unadded Tracks"
+  );
 
   await addItemsToPlaylist(authStore.getAccessToken, playlist.id, trackIds);
 };
