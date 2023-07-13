@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const client_id = "91c14e269ed8424484de48b50ee701bb";
+const client_id = "348f256db39d4692be11233766433611";
 const client_redirect_uri = "http://localhost:5173/callback";
 const server_url = "http://localhost:3080";
 const scopes = [

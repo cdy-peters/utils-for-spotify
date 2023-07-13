@@ -28,7 +28,7 @@
         />
         <div class="flex flex-col ml-4">
           <p class="text-xl">{{ playback.item.name }}</p>
-          <p class="text-lg text-gray-300">
+          <p class="text-md text-gray-300">
             {{ getArtistString(playback.item.artists) }}
           </p>
         </div>

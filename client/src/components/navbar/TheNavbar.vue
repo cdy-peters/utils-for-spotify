@@ -58,7 +58,7 @@
     >
       <div class="fixed inset-0 z-10" />
       <DialogPanel
-        class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
+        class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-700/10"
       >
         <div class="flex items-center justify-between">
           <NavbarLogo />
@@ -72,7 +72,7 @@
           </button>
         </div>
         <div class="mt-6 flow-root">
-          <div class="-my-6 divide-y divide-gray-500/10">
+          <div class="-my-6 divide-y divide-gray-100/10">
             <div class="space-y-2 py-6" v-if="authStore.isLoggedIn()">
               <template v-for="item in navigation" :key="item.name">
                 <a
