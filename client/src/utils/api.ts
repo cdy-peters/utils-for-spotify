@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
+import { useAuthStore } from "@/stores/auth";
 
 const baseURL = "https://api.spotify.com/v1";
 const axiosInstance = axios.create({
@@ -8,18 +9,30 @@ const axiosInstance = axios.create({
 const config: AxiosRequestConfig = {};
 
 const handleRequestError = async (error: any) => {
-  if (error.response.status === 429) {
+  const status = error.response.status;
+  if (status === 429) {
     const retryAfter = error.response.headers["retry-after"];
     const retryAfterMs = parseInt(retryAfter) * 1000;
     await new Promise((resolve) => setTimeout(resolve, retryAfterMs));
-    return Promise.reject(error);
+    return {
+      retry: true,
+    };
+  } else if (status === 401) {
+    const authStore = useAuthStore();
+    const newAccessToken = await authStore.refreshAccessToken();
+    return {
+      retry: true,
+      newAccessToken,
+    };
   } else {
     console.log(error);
-    return null;
+    return {
+      retry: false,
+    };
   }
 };
 
-const get = async (token: string, endpoint: string) => {
+const get: any = async (token: string, endpoint: string) => {
   try {
     config.headers = {
       Authorization: `Bearer ${token}`,
@@ -28,11 +41,18 @@ const get = async (token: string, endpoint: string) => {
     const response = await axiosInstance.get(endpoint, config);
     return response.data;
   } catch (error) {
-    return handleRequestError(error);
+    const { retry, newAccessToken } = await handleRequestError(error);
+    if (retry) {
+      if (newAccessToken) {
+        token = newAccessToken;
+      }
+      return get(token, endpoint);
+    }
+    return null;
   }
 };
 
-const getNext = async (token: string, next: string) => {
+const getNext: any = async (token: string, next: string) => {
   try {
     config.headers = {
       Authorization: `Bearer ${token}`,
@@ -41,11 +61,18 @@ const getNext = async (token: string, next: string) => {
     const response = await axiosInstance.get(next, config);
     return response.data;
   } catch (error) {
-    return handleRequestError(error);
+    const { retry, newAccessToken } = await handleRequestError(error);
+    if (retry) {
+      if (newAccessToken) {
+        token = newAccessToken;
+      }
+      return getNext(token, next);
+    }
+    return null;
   }
 };
 
-const post = async (token: string, endpoint: string, body: any) => {
+const post: any = async (token: string, endpoint: string, body: any) => {
   try {
     config.headers = {
       Authorization: `Bearer ${token}`,
@@ -54,7 +81,14 @@ const post = async (token: string, endpoint: string, body: any) => {
     const response = await axiosInstance.post(endpoint, body, config);
     return response.data;
   } catch (error) {
-    return handleRequestError(error);
+    const { retry, newAccessToken } = await handleRequestError(error);
+    if (retry) {
+      if (newAccessToken) {
+        token = newAccessToken;
+      }
+      return post(token, endpoint, body);
+    }
+    return null;
   }
 };
 

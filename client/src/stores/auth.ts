@@ -8,7 +8,7 @@ const scopes = [
   "user-read-recently-played",
   "playlist-read-private",
   "user-library-read",
-  "playlist-modify-public"
+  "playlist-modify-public",
 ];
 
 export const useAuthStore = defineStore("auth", {
@@ -51,6 +51,23 @@ export const useAuthStore = defineStore("auth", {
       this.accessToken = data.access_token;
       this.refreshToken = data.refresh_token;
       this.expiresIn = data.expires_in;
+    },
+    async refreshAccessToken() {
+      if (this.refreshToken === "") {
+        this.logout();
+        return;
+      }
+
+      const response = await fetch(
+        `${server_url}/refresh-access-token?refresh_token=${this.refreshToken}`
+      );
+      const data = await response.json();
+
+      this.accessToken = data.access_token;
+      this.expiresIn = data.expires_in;
+      this.refreshToken = data.refresh_token || this.refreshToken;
+
+      return this.accessToken;
     },
   },
   persist: true,
