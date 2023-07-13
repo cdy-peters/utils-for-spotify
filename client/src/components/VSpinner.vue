@@ -2,7 +2,8 @@
   <div role="status">
     <svg
       aria-hidden="true"
-      class="w-8 h-8 mr-2 text-gray-300 animate-spin dark:text-gray-700 fill-green"
+      class="animate-spin text-gray-700 fill-green"
+      :class="button ? 'w-4 h-4' : 'w-8 h-8'"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -19,3 +20,14 @@
     <span class="sr-only">Loading...</span>
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  props: {
+    button: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
+</script>

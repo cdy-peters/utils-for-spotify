@@ -32,7 +32,12 @@
       <p class="text-lg">{{ unaddedTracks.length }} tracks</p>
     </div>
     <div
-      class="h-[calc(100vh-437px)] divide-y divide-gray-700/20 py-2 px-2 overflow-y-auto"
+      class="divide-y divide-gray-700/20 py-2 px-2 overflow-y-auto"
+      :class="
+        state === State.SEARCHING
+          ? 'h-[calc(100vh-437px)]'
+          : 'h-[calc(100vh-385px)]'
+      "
     >
       <template v-if="unaddedTracks.length">
         <div v-for="track in unaddedTracks" :key="track.id">
@@ -51,11 +56,18 @@
     </div>
     <div class="py-4 max-[425px]:text-center">
       <button
-        :disabled="state !== State.DONE || unaddedTracks.length === 0"
-        class="bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:bg-green"
+        :disabled="
+          state !== State.DONE || unaddedTracks.length === 0 || tracksAdded || addingTracks
+        "
+        class="bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:bg-green flex items-center"
         @click="addTracks"
       >
-        Add tracks to a new playlist
+        <template v-if="!addingTracks">
+          {{ !tracksAdded ? "Add tracks to a new playlist" : "Tracks added" }}
+        </template>
+        <template v-else>
+          Adding tracks <VSpinner class="ml-3 [&>svg]:fill-white" :button="true" />
+        </template>
       </button>
     </div>
   </div>
@@ -92,6 +104,8 @@ const user = spotifyStore.user;
 const state = ref(State.GETTING_PLAYLISTS);
 const stateMessage = ref("Getting your playlists");
 
+const percentCompletion = ref(0);
+
 const totalSavedTracks = ref(0);
 const totalPlaylistTracks = ref(0);
 
@@ -100,7 +114,8 @@ const savedTracks = ref<{ id: string; name: string; artists: string }[]>([]);
 const playlistTracks = ref(new Set());
 const unaddedTracks = ref<{ id: string; name: string; artists: string }[]>([]);
 
-const percentCompletion = ref(0);
+const tracksAdded = ref(false);
+const addingTracks = ref(false);
 
 let next: string | null = null;
 let currPlaylist = 0;
@@ -178,7 +193,8 @@ const fetchSavedTracks = async () => {
       savedTracks.value = [...savedTracks.value, track];
 
       if (playlistTracks.value.has(track.id)) {
-        continue;
+        playlistTracks.value.delete(track.id);
+        totalPlaylistTracks.value--;
       } else if (currPlaylist < playlists.value.length) {
         await fetchPlaylistTracks(track.id);
       } else {
@@ -247,6 +263,8 @@ const checkPlaylistTracks = (trackId: string, tracks: string[]) => {
 };
 
 const addTracks = async () => {
+  addingTracks.value = true;
+
   const trackIds = unaddedTracks.value.map(
     (track) => `spotify:track:${track.id}`
   );
@@ -257,5 +275,8 @@ const addTracks = async () => {
   );
 
   await addItemsToPlaylist(authStore.getAccessToken, playlist.id, trackIds);
+
+  addingTracks.value = false;
+  tracksAdded.value = true;
 };
 </script>
