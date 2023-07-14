@@ -35,8 +35,8 @@
       class="divide-y divide-gray-700/20 py-2 px-2 overflow-y-auto"
       :class="
         state === State.SEARCHING
-          ? 'h-[calc(100vh-437px)]'
-          : 'h-[calc(100vh-385px)]'
+          ? 'lg:h-[calc(100vh-525px)] h-[calc(100vh-437px)]'
+          : 'lg:h-[calc(100vh-473px)] h-[calc(100vh-385px)]'
       "
     >
       <template v-if="unaddedTracks.length">
@@ -57,7 +57,10 @@
     <div class="py-4 max-[425px]:text-center">
       <button
         :disabled="
-          state !== State.DONE || unaddedTracks.length === 0 || tracksAdded || addingTracks
+          state !== State.DONE ||
+          unaddedTracks.length === 0 ||
+          tracksAdded ||
+          addingTracks
         "
         class="bg-green hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50 disabled:bg-green flex items-center"
         @click="addTracks"
@@ -66,7 +69,8 @@
           {{ !tracksAdded ? "Add tracks to a new playlist" : "Tracks added" }}
         </template>
         <template v-else>
-          Adding tracks <VSpinner class="ml-3 [&>svg]:fill-white" :button="true" />
+          Adding tracks
+          <VSpinner class="ml-3 [&>svg]:fill-white" :button="true" />
         </template>
       </button>
     </div>

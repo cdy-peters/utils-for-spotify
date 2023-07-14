@@ -103,6 +103,8 @@
             </div>
           </div>
         </div>
+
+        <TheFooter class="absolute bottom-0" />
       </DialogPanel>
     </Dialog>
   </header>
@@ -120,6 +122,7 @@ import router from "@/router";
 import NavbarDropdown from "./NavbarDropdown.vue";
 import MobileNavbarDropdown from "./MobileNavbarDropdown.vue";
 import NavbarLogo from "./NavbarLogo.vue";
+import TheFooter from "../TheFooter.vue";
 
 const products = [
   {

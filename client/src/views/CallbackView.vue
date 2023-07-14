@@ -1,5 +1,5 @@
 <template>
-  <h2>Callback</h2>
+  <div></div>
 </template>
 
 <script setup lang="ts">
