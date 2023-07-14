@@ -180,3 +180,17 @@ export const getTrackFeatures = async (token: string, trackId: string) => {
   const endpoint = `/audio-features/${trackId}`;
   return get(token, endpoint);
 };
+
+export const getAlbum = async (token: string, albumId: string) => {
+  const endpoint = `/albums/${albumId}`;
+  return get(token, endpoint);
+};
+
+export const getNextAlbumTracks = async (token: string, next: string) => {
+  return getNext(token, next);
+};
+
+export const getTracksFeatures = async (token: string, trackIds: string[]) => {
+  const endpoint = `/audio-features?ids=${trackIds.join(",")}`;
+  return get(token, endpoint);
+};

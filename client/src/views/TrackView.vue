@@ -42,9 +42,12 @@
           >
 
           <div v-if="track.album.album_type === 'album'">
-            <p class="text-md text-gray-300">
+            <a
+              class="text-md text-gray-300 hover:text-gray-100 cursor-pointer"
+              :href="`/album/${track.album.id}`"
+            >
               Track {{ track.track_number }} on {{ track.album.name }}
-            </p>
+            </a>
           </div>
         </div>
 
@@ -116,8 +119,5 @@ onMounted(async () => {
     authStore.getAccessToken,
     props.id
   );
-
-  console.log(track.value);
-  console.log(trackFeatures.value);
 });
 </script>

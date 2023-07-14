@@ -59,3 +59,38 @@ export const dateToString = (date: string) => {
   const [year, month, day] = date.split("-");
   return `${months[Number(month) - 1]} ${day}, ${year}`;
 };
+
+export const getAverageFeatures = (
+  tracksFeatures: { id: string; features: any }[]
+) => {
+  const averageFeatures = {
+    acousticness: 0,
+    danceability: 0,
+    energy: 0,
+    instrumentalness: 0,
+    liveness: 0,
+    speechiness: 0,
+    valence: 0,
+  };
+
+  tracksFeatures.forEach((trackFeatures) => {
+    averageFeatures.acousticness += trackFeatures.features.acousticness;
+    averageFeatures.danceability += trackFeatures.features.danceability;
+    averageFeatures.energy += trackFeatures.features.energy;
+    averageFeatures.instrumentalness += trackFeatures.features.instrumentalness;
+    averageFeatures.liveness += trackFeatures.features.liveness;
+    averageFeatures.speechiness += trackFeatures.features.speechiness;
+    averageFeatures.valence += trackFeatures.features.valence;
+  });
+
+  const len = tracksFeatures.length;
+  averageFeatures.acousticness /= len;
+  averageFeatures.danceability /= len;
+  averageFeatures.energy /= len;
+  averageFeatures.instrumentalness /= len;
+  averageFeatures.liveness /= len;
+  averageFeatures.speechiness /= len;
+  averageFeatures.valence /= len;
+
+  return averageFeatures;
+};
