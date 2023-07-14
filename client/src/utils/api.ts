@@ -161,3 +161,12 @@ export const addItemsToPlaylist = async (
 
   return;
 };
+
+export const searchForItem = async (
+  token: string,
+  query: string,
+  type: string
+) => {
+  const endpoint = `/search?q=${query}&type=${type}`;
+  return get(token, endpoint);
+}

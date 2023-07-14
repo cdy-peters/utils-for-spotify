@@ -4,6 +4,12 @@ export const getLargestImage = (images: any[]) => {
   }, images[0]);
 };
 
+export const getSmallestImage = (images: any[]) => {
+  return images.reduce((smallestImage, image) => {
+    return image.height < smallestImage.height ? image : smallestImage;
+  }, images[0]);
+};
+
 export const getArtistString = (artists: any[]) => {
   return artists.map((artist) => artist.name).join(", ");
 };

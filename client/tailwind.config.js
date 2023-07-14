@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        none: "transparent",
         green: {
           DEFAULT: "#1DB954",
           hover: "#198a41",
@@ -15,8 +16,11 @@ module.exports = {
         gray: {
           100: "#e0e0e0",
           300: "#b3b3b3",
+          600: "#242424",
+          650: "#2a2a2a",
           700: "#535353",
-          900: "#212121",
+          800: "#282828",
+          900: "#181818"
         },
       },
     },

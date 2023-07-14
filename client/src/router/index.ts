@@ -3,6 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 
 import LandingView from "@/views/LandingView.vue";
 import DashboardView from "@/views/DashboardView.vue";
+import SearchView from "@/views/SearchView.vue";
 import UnaddedTracksView from "@/views/UnaddedTracksView.vue";
 import CallbackView from "@/views/CallbackView.vue";
 
@@ -19,6 +20,12 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: SearchView,
       meta: { requiresAuth: true },
     },
     {

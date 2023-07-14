@@ -136,6 +136,7 @@ const products = [
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
+  { name: "Search", href: "/search" },
   { name: "Tools", dropdown: products },
 ];
 
