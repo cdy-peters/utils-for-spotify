@@ -169,4 +169,14 @@ export const searchForItem = async (
 ) => {
   const endpoint = `/search?q=${query}&type=${type}`;
   return get(token, endpoint);
-}
+};
+
+export const getTrack = async (token: string, trackId: string) => {
+  const endpoint = `/tracks/${trackId}`;
+  return get(token, endpoint);
+};
+
+export const getTrackFeatures = async (token: string, trackId: string) => {
+  const endpoint = `/audio-features/${trackId}`;
+  return get(token, endpoint);
+};

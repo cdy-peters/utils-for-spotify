@@ -16,21 +16,27 @@
       />
     </div>
 
-    <ul v-if="results.length > 0" class="bg-gray-900 sm:rounded-md p-3">
-      <li
+    <div v-if="results.length > 0" class="bg-gray-900 sm:rounded-md p-3">
+      <a
         v-for="result in results"
         :key="result.id"
+        :href="`/${result.type}/${result.id}`"
         class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-800 cursor-pointer"
       >
-        <img :src="result.image" class="w-10 h-10 mr-3" alt="Album cover" />
+        <img
+          :src="result.image"
+          class="w-10 h-10 mr-3"
+          alt="Album cover"
+          loading="lazy"
+        />
         <div>
           <p class="text-xl">{{ result.name }}</p>
           <p class="text-md text-gray-300">
             {{ result.artists }}
           </p>
         </div>
-      </li>
-    </ul>
+      </a>
+    </div>
 
     <p v-else-if="searchQuery && !isLoading" class="text-md text-center mt-10">
       No results found.
@@ -54,7 +60,7 @@ const authStore = useAuthStore();
 
 const searchQuery = ref("");
 const results = ref<
-  { id: string; image: string; name: string; artists: string }[]
+  { id: string; type: string; image: string; name: string; artists: string }[]
 >([]);
 const isLoading = ref(false);
 
@@ -76,11 +82,13 @@ const search = async () => {
     searchQuery.value,
     "track"
   );
+  console.log(data);
 
   isLoading.value = false;
 
   results.value = data.tracks.items.map((item: any) => ({
     id: item.id,
+    type: item.type,
     image: getSmallestImage(item.album.images).url,
     name: item.name,
     artists: getArtistString(item.artists),
