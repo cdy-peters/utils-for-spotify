@@ -13,7 +13,7 @@
         >
       </div>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <div class="mb-4">
           <p class="text-xl">{{ album.name }}</p>
           <div class="flex flex-row items-center">
@@ -53,12 +53,41 @@
     />
   </div>
 
-  <!-- TODO: Add tracks -->
-  <!-- <div v-if="tracks">
-    <div v-for="track in tracks" :key="track.id">
-      <p>{{ track.id }}</p>
+  <div class="lg:mx-8 mt-8">
+    <p class="text-xl font-semibold ml-10">Track list</p>
+    <div v-for="track in tracks" :key="track.id" class="flex items-center">
+      <a
+        :href="`/track/${track.id}`"
+        class="flex items-center hover:bg-gray-800 w-full rounded-md px-6 py-1 cursor-pointer"
+      >
+        <p class="text-lg text-gray-300 mr-3 text-center w-10">
+          {{ track.track_number }}
+        </p>
+        <div>
+          <p class="text-lg">{{ track.name }}</p>
+          <div class="flex flex-row items-center">
+            <svg
+              v-if="track.explicit"
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="text-gray-200 mr-2"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"
+              />
+            </svg>
+
+            <p class="text-md text-gray-300">
+              {{ getArtistString(track.artists) }}
+            </p>
+          </div>
+        </div>
+      </a>
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script setup lang="ts">

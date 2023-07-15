@@ -32,7 +32,7 @@
         >
       </div>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <div class="mb-4">
           <p class="text-xl">{{ artist.name }}</p>
           <p class="text-lg text-gray-300">

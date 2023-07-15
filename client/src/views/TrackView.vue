@@ -16,7 +16,7 @@
         >
       </div>
 
-      <div class="mb-4">
+      <div class="mb-8">
         <div class="mb-4">
           <p class="text-xl">{{ track.name }}</p>
           <div class="flex flex-row items-center">
