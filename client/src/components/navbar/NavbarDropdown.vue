@@ -17,7 +17,7 @@
       leave-to-class="opacity-0 translate-y-1"
     >
       <PopoverPanel
-        class="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-black shadow-lg sm:max-w-sm sm:ring-1 sm:ring-gray-700/10"
+        class="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-black shadow-lg sm:max-w-sm sm:ring-1 sm:ring-gray-400/10"
       >
         <div class="p-4">
           <div
@@ -30,7 +30,7 @@
               :class="
                 subItem.name.toLowerCase() == router.currentRoute.value.name
                   ? 'bg-green text-black'
-                  : 'bg-gray-700 text-gray-100 group-hover:bg-green-hover'
+                  : 'bg-gray-400 text-gray-100 group-hover:bg-green-hover'
               "
             >
               <component
@@ -44,7 +44,7 @@
                 {{ subItem.name }}
                 <span class="absolute inset-0" />
               </a>
-              <p class="mt-1 text-gray-300">
+              <p class="mt-1 text-gray-200">
                 {{ subItem.description }}
               </p>
             </div>
@@ -76,7 +76,7 @@ const getNavItemClass = (dropdown: any) => {
     "leading-6",
     dropdownNames.includes(router.currentRoute.value.name)
       ? "bg-green text-black"
-      : "text-gray-300 hover:bg-green-hover hover:text-white",
+      : "text-gray-200 hover:bg-green-hover hover:text-white",
   ];
 };
 </script>

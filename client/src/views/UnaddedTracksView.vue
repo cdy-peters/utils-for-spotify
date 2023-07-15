@@ -12,7 +12,7 @@
               : ""
           }}
         </p>
-        <p class="text-md text-gray-300 truncate">
+        <p class="text-md text-gray-200 truncate">
           {{
             savedTracks[savedTracks.length - 1]
               ? savedTracks[savedTracks.length - 1].artists
@@ -25,14 +25,14 @@
   </div>
 
   <div
-    class="lg:w-3/5 bg-gray-900 px-4 sm:rounded-lg divide-y divide-gray-700 m-auto"
+    class="lg:w-3/5 bg-gray-900 px-4 sm:rounded-lg divide-y divide-gray-400 m-auto"
   >
     <div class="flex flex-row items-center justify-between py-4">
       <p class="text-xl font-semibold">Unadded Tracks</p>
       <p class="text-lg">{{ unaddedTracks.length }} tracks</p>
     </div>
     <div
-      class="divide-y divide-gray-700/20 py-2 px-2 overflow-y-auto"
+      class="divide-y divide-gray-400/20 py-2 px-2 overflow-y-auto"
       :class="
         state === State.SEARCHING
           ? 'lg:h-[calc(100vh-525px)] h-[calc(100vh-437px)]'
@@ -42,7 +42,7 @@
       <template v-if="unaddedTracks.length">
         <div v-for="track in unaddedTracks" :key="track.id">
           <p class="text-lg">{{ track.name }}</p>
-          <p class="text-md text-gray-300">{{ track.artists }}</p>
+          <p class="text-md text-gray-200">{{ track.artists }}</p>
         </div>
       </template>
       <div v-else-if="state === State.DONE">

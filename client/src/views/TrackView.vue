@@ -26,7 +26,7 @@
               width="16"
               height="16"
               fill="currentColor"
-              class="text-gray-200 mr-2"
+              class="text-gray-300 mr-2"
               viewBox="0 0 16 16"
             >
               <path
@@ -35,7 +35,7 @@
             </svg>
 
             <p
-              class="text-lg text-gray-300"
+              class="text-lg text-gray-200"
               v-html="getArtistString(track.artists, true)"
             ></p>
           </div>
@@ -47,7 +47,7 @@
 
           <div v-if="track.album.album_type === 'album'">
             <a
-              class="text-md text-gray-300 hover:text-gray-100 cursor-pointer"
+              class="text-md text-gray-200 hover:text-gray-100 cursor-pointer"
               :href="`/album/${track.album.id}`"
             >
               Track {{ track.track_number }} on {{ track.album.name }}

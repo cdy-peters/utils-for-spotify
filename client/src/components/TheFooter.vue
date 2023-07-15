@@ -2,7 +2,7 @@
   <footer class="bg-black">
     <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
       <div class="lg:flex lg:items-center lg:justify-between">
-        <span class="text-sm text-gray-300 lg:text-center"
+        <span class="text-sm text-gray-200 lg:text-center"
           >© {{ new Date().getFullYear() }}
           <a href="https://codypeters.dev/" class="hover:underline"
             >Cody Peters</a
@@ -11,7 +11,7 @@
         <div class="flex mt-4 space-x-5 lg:justify-center lg:mt-0">
           <a
             href="https://github.com/cdy-peters"
-            class="text-gray-300 hover:text-green"
+            class="text-gray-200 hover:text-green"
           >
             <svg
               class="w-6 h-6"
@@ -30,7 +30,7 @@
           </a>
           <a
             href="https://www.linkedin.com/in/cdy-peters"
-            class="text-gray-300 hover:text-green"
+            class="text-gray-200 hover:text-green"
           >
             <svg
               class="w-6 h-6"
@@ -50,7 +50,7 @@
           </a>
           <a
             href="https://codypeters.dev"
-            class="text-gray-300 hover:text-green"
+            class="text-gray-200 hover:text-green"
           >
             <svg
               class="w-6 h-6"

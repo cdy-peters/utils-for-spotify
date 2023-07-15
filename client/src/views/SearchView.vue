@@ -4,13 +4,13 @@
       <div
         class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
       >
-        <MagnifyingGlassIcon class="w-5 h-5 text-gray-300" />
+        <MagnifyingGlassIcon class="w-5 h-5 text-gray-200" />
       </div>
       <input
         type="text"
         name="search-item"
         id="search-item"
-        class="block w-full rounded-full border-0 py-2 pl-10 pr-20 bg-gray-600 hover:bg-gray-650 text-gray-100 ring-1 ring-inset ring-none placeholder:text-gray-300 sm:text-sm sm:leading-6"
+        class="block w-full rounded-full border-0 py-2 pl-10 pr-20 bg-gray-800 hover:bg-gray-600 text-gray-100 ring-1 ring-inset ring-none placeholder:text-gray-200 sm:text-sm sm:leading-6"
         placeholder="Search tracks"
         v-model="searchQuery"
       />
@@ -47,7 +47,7 @@ import VSpinner from "@/components/VSpinner.vue";
 import VTypeButton from "@/components/search/VTypeButton.vue";
 import VTrackList from "@/components/search/VTrackList.vue";
 import VAlbumList from "@/components/search/VAlbumList.vue";
-import VArtistList from "@/components/search/VArtistList.vue";
+import VArtistList from "@/components/search/artist/VArtistList.vue";
 
 const authStore = useAuthStore();
 

@@ -18,7 +18,7 @@
           <p class="text-xl">{{ album.name }}</p>
           <div class="flex flex-row items-center">
             <p
-              class="text-lg text-gray-300"
+              class="text-lg text-gray-200"
               v-html="getArtistString(album.artists, true)"
             ></p>
           </div>
@@ -63,10 +63,10 @@
       <tr
         v-for="track in tracks"
         :key="track.id"
-        class="hover:bg-gray-800 cursor-pointer"
+        class="hover:bg-gray-700 cursor-pointer"
         @click="$router.push(`/track/${track.id}`)"
       >
-        <td class="text-lg text-gray-300 text-center rounded-s-md">
+        <td class="text-lg text-gray-200 text-center rounded-s-md">
           {{ track.track_number }}
         </td>
         <td class="rounded-e-md">
@@ -78,14 +78,14 @@
               width="16"
               height="16"
               fill="currentColor"
-              class="text-gray-200 mr-2"
+              class="text-gray-300 mr-2"
               viewBox="0 0 16 16"
             >
               <path
                 d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"
               />
             </svg>
-            <p class="text-md text-gray-300">
+            <p class="text-md text-gray-200">
               {{ getArtistString(track.artists) }}
             </p>
           </div>

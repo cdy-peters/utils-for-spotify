@@ -2,7 +2,7 @@
   <div role="status">
     <svg
       aria-hidden="true"
-      class="animate-spin text-gray-700 fill-green"
+      class="animate-spin text-gray-400 fill-green"
       :class="button ? 'w-4 h-4' : 'w-8 h-8'"
       viewBox="0 0 100 101"
       fill="none"

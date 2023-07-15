@@ -3,7 +3,7 @@
     v-for="track in tracks"
     :key="track.id"
     :href="`/track/${track.id}`"
-    class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-800 cursor-pointer"
+    class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <img
       :src="track.image"
@@ -20,7 +20,7 @@
           width="16"
           height="16"
           fill="currentColor"
-          class="text-gray-200 mr-2"
+          class="text-gray-300 mr-2"
           viewBox="0 0 16 16"
         >
           <path
@@ -28,7 +28,7 @@
           />
         </svg>
 
-        <p class="text-md text-gray-300">
+        <p class="text-md text-gray-200">
           {{ track.artists }}
         </p>
       </div>

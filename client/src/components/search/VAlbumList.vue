@@ -3,7 +3,7 @@
     v-for="album in albums"
     :key="album.id"
     :href="`/album/${album.id}`"
-    class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-800 cursor-pointer"
+    class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <img
       :src="album.image"
@@ -13,7 +13,7 @@
     />
     <div>
       <p class="text-xl">{{ album.name }}</p>
-      <p class="text-md text-gray-300">
+      <p class="text-md text-gray-200">
         {{ album.artists }}
       </p>
     </div>

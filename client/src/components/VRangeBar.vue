@@ -7,7 +7,7 @@
       }}</span>
     </div>
     <div
-      class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden"
+      class="w-full bg-gray-300 rounded-full h-2.5 dark:bg-gray-400 overflow-hidden"
     >
       <div
         :style="{ width: widthPercentage }"
