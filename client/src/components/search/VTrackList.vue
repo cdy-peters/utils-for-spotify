@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { getSmallestImage, getArtistString } from "@/utils/spotify";
 
 const props = defineProps<{
@@ -31,12 +31,21 @@ const props = defineProps<{
 const tracks = ref<any[]>([]);
 
 onMounted(async () => {
-  tracks.value = props.results.map((track) => ({
+  updateTracks(props.results);
+});
+
+watch(
+  () => props.results,
+  (results) => updateTracks(results)
+);
+
+const updateTracks = (results: any[]) => {
+  tracks.value = results.map((track) => ({
     id: track.id,
     type: track.type,
     image: getSmallestImage(track.album.images).url,
     name: track.name,
     artists: getArtistString(track.artists),
   }));
-});
+};
 </script>

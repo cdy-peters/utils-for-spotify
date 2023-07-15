@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { getSmallestImage } from "@/utils/spotify";
 
 const props = defineProps<{
@@ -39,11 +39,20 @@ const props = defineProps<{
 const artists = ref<any[]>([]);
 
 onMounted(async () => {
-  artists.value = props.results.map((artist) => ({
+  updateArtists(props.results);
+});
+
+watch(
+  () => props.results,
+  (results) => updateArtists(results)
+);
+
+const updateArtists = (results: any[]) => {
+  artists.value = results.map((artist) => ({
     id: artist.id,
     type: artist.type,
     image: artist.images.length ? getSmallestImage(artist.images).url : null,
     name: artist.name,
   }));
-});
+};
 </script>
