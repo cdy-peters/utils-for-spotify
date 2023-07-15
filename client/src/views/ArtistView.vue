@@ -88,7 +88,6 @@ import {
 } from "@/utils/api";
 import {
   getLargestImage,
-  getArtistString,
   getAverageFeatures,
   formatNumber,
   genresToString,
@@ -115,7 +114,6 @@ onMounted(async () => {
   let data: any;
   data = await getArtist(authStore.getAccessToken, props.id);
   artist.value = data;
-  console.log(data);
 
   let i = 0;
   do {

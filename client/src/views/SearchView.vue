@@ -16,26 +16,16 @@
       />
     </div>
 
+    <div class="flex flex-row gap-x-3 mx-2 mb-2">
+      <VTypeButton label="track" :type="type" :typeHandler="typeHandler" />
+      <VTypeButton label="album" :type="type" :typeHandler="typeHandler" />
+      <VTypeButton label="artist" :type="type" :typeHandler="typeHandler" />
+    </div>
+
     <div v-if="results.length > 0" class="bg-gray-900 sm:rounded-md p-3">
-      <a
-        v-for="result in results"
-        :key="result.id"
-        :href="`/${result.type}/${result.id}`"
-        class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-800 cursor-pointer"
-      >
-        <img
-          :src="result.image"
-          class="w-10 h-10 mr-3"
-          alt="Album cover"
-          loading="lazy"
-        />
-        <div>
-          <p class="text-xl">{{ result.name }}</p>
-          <p class="text-md text-gray-300">
-            {{ result.artists }}
-          </p>
-        </div>
-      </a>
+      <VTrackList v-if="type === 'track'" :results="results" />
+      <VAlbumList v-else-if="type === 'album'" :results="results" />
+      <VArtistList v-else-if="type === 'artist'" :results="results" />
     </div>
 
     <p v-else-if="searchQuery && !isLoading" class="text-md text-center mt-10">
@@ -53,16 +43,19 @@ import { ref, watch } from "vue";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 import { searchForItem } from "@/utils/api";
 import { useAuthStore } from "@/stores/auth";
-import { getSmallestImage, getArtistString } from "@/utils/spotify";
 import VSpinner from "@/components/VSpinner.vue";
+import VTypeButton from "@/components/search/VTypeButton.vue";
+import VTrackList from "@/components/search/VTrackList.vue";
+import VAlbumList from "@/components/search/VAlbumList.vue";
+import VArtistList from "@/components/search/VArtistList.vue";
 
 const authStore = useAuthStore();
 
 const searchQuery = ref("");
-const results = ref<
-  { id: string; type: string; image: string; name: string; artists: string }[]
->([]);
+const type = ref("track");
+const results = ref<any>([]);
 const isLoading = ref(false);
+const debounceDelay = 500;
 
 const debounce = (func: Function, delay: number) => {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -80,24 +73,36 @@ const search = async () => {
   const data = await searchForItem(
     authStore.getAccessToken,
     searchQuery.value,
-    "track"
+    type.value
   );
-  console.log(data);
+
+  switch (type.value) {
+    case "track":
+      results.value = data.tracks.items;
+      break;
+    case "album":
+      results.value = data.albums.items;
+      break;
+    case "artist":
+      results.value = data.artists.items;
+      break;
+  }
 
   isLoading.value = false;
-
-  results.value = data.tracks.items.map((item: any) => ({
-    id: item.id,
-    type: item.type,
-    image: getSmallestImage(item.album.images).url,
-    name: item.name,
-    artists: getArtistString(item.artists),
-  }));
 };
 
-const debouncedSearch = debounce(search, 500);
+const debouncedSearch = debounce(search, debounceDelay);
 
-watch(searchQuery, () => {
+const typeHandler = (newType: string) => {
+  if (newType === type.value) return;
+  if (searchQuery.value) {
+    results.value = [];
+    isLoading.value = true;
+  }
+  type.value = newType;
+};
+
+const searchQueryWatcher = () => {
   if (!searchQuery.value) {
     results.value = [];
     return;
@@ -105,7 +110,10 @@ watch(searchQuery, () => {
 
   isLoading.value = true;
   debouncedSearch();
-});
+};
+
+watch(searchQuery, searchQueryWatcher);
+watch(type, searchQueryWatcher);
 
 if (searchQuery.value) {
   search();
