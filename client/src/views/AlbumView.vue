@@ -1,7 +1,7 @@
 <template>
-  <div class="lg:flex flex-row gap-x-16 justify-center px-6">
+  <div class="lg:flex flex-row gap-x-16 justify-center px-6 mb-8">
     <div
-      v-if="album && tracks"
+      v-if="album && averageTrackFeatures"
       class="sm:flex flex-row gap-x-4 lg:w-1/2 max-lg:max-w-lg"
     >
       <div class="mb-4">
@@ -53,19 +53,25 @@
     />
   </div>
 
-  <div class="lg:mx-8 mt-8">
-    <p class="text-xl font-semibold ml-10">Track list</p>
-    <div v-for="track in tracks" :key="track.id" class="flex items-center">
-      <a
-        :href="`/track/${track.id}`"
-        class="flex items-center hover:bg-gray-800 w-full rounded-md px-6 py-1 cursor-pointer"
+  <div v-if="tracks" class="lg:mx-8 px-6">
+    <p class="text-xl font-semibold">Track List</p>
+    <table class="w-full">
+      <tr>
+        <th class="w-12"></th>
+        <th></th>
+      </tr>
+      <tr
+        v-for="track in tracks"
+        :key="track.id"
+        class="hover:bg-gray-800 cursor-pointer"
+        @click="$router.push(`/track/${track.id}`)"
       >
-        <p class="text-lg text-gray-300 mr-3 text-center w-10">
+        <td class="text-lg text-gray-300 text-center rounded-s-md">
           {{ track.track_number }}
-        </p>
-        <div>
+        </td>
+        <td class="rounded-e-md">
           <p class="text-lg">{{ track.name }}</p>
-          <div class="flex flex-row items-center">
+          <div class="flex items-center">
             <svg
               v-if="track.explicit"
               xmlns="http://www.w3.org/2000/svg"
@@ -79,14 +85,13 @@
                 d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"
               />
             </svg>
-
             <p class="text-md text-gray-300">
               {{ getArtistString(track.artists) }}
             </p>
           </div>
-        </div>
-      </a>
-    </div>
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
