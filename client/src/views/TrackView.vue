@@ -84,7 +84,7 @@
       </div>
     </div>
 
-    <VFeatures v-if="trackFeatures" :trackFeatures="trackFeatures" />
+    <VFeatures v-if="trackFeatures" label="Track features" :trackFeatures="trackFeatures" />
   </div>
 </template>
 

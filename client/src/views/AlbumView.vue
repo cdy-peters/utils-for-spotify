@@ -48,6 +48,7 @@
 
     <VFeatures
       v-if="averageTrackFeatures"
+      label="Average features of album tracks"
       :trackFeatures="averageTrackFeatures"
     />
   </div>
