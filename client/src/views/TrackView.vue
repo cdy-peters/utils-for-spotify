@@ -1,6 +1,9 @@
 <template>
   <div class="lg:flex flex-row gap-x-16 justify-center px-6">
-    <div v-if="track && trackFeatures" class="sm:flex flex-row gap-x-4">
+    <div
+      v-if="track && trackFeatures"
+      class="sm:flex flex-row gap-x-4 lg:w-1/2 max-lg:max-w-lg"
+    >
       <div class="mb-4">
         <img
           :src="getLargestImage(track.album.images).url"
@@ -31,9 +34,10 @@
               />
             </svg>
 
-            <p class="text-lg text-gray-300">
-              {{ getArtistString(track.artists) }}
-            </p>
+            <p
+              class="text-lg text-gray-300"
+              v-html="getArtistString(track.artists, true)"
+            ></p>
           </div>
           <a
             class="sm:hidden block text-center w-56 mt-1 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
@@ -80,11 +84,7 @@
       </div>
     </div>
 
-    <VFeatures
-      v-if="trackFeatures"
-      :trackFeatures="trackFeatures"
-      class="max-w-sm lg:w-1/4"
-    />
+    <VFeatures v-if="trackFeatures" :trackFeatures="trackFeatures" />
   </div>
 </template>
 

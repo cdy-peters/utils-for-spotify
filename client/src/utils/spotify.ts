@@ -40,7 +40,15 @@ export const getSmallestImage = (images: any[]) => {
   }, images[0]);
 };
 
-export const getArtistString = (artists: any[]) => {
+export const getArtistString = (artists: any[], anchor: boolean = false) => {
+  if (anchor) {
+    return artists
+      .map((artist) => {
+        return `<a href="/artist/${artist.id}" class="hover:text-gray-100 cursor-pointer">${artist.name}</a>`;
+      })
+      .join(", ");
+  }
+
   return artists.map((artist) => artist.name).join(", ");
 };
 
@@ -93,4 +101,12 @@ export const getAverageFeatures = (
   averageFeatures.valence /= len;
 
   return averageFeatures;
+};
+
+export const formatNumber = (num: number) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export const genresToString = (arr: string[]) => {
+  return arr.map((genre) => genre[0].toUpperCase() + genre.slice(1)).join(", ");
 };

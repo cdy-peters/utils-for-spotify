@@ -194,3 +194,26 @@ export const getTracksFeatures = async (token: string, trackIds: string[]) => {
   const endpoint = `/audio-features?ids=${trackIds.join(",")}`;
   return get(token, endpoint);
 };
+
+export const getArtist = async (token: string, artistId: string) => {
+  const endpoint = `/artists/${artistId}`;
+  return get(token, endpoint);
+};
+
+export const getArtistAlbums = async (
+  token: string,
+  artistId: string,
+  groups: string[],
+  i: number
+) => {
+  const include_groups = groups.join(",");
+  const limit = 50;
+  const offset = i * limit;
+  const endpoint = `/artists/${artistId}/albums?include_groups=${include_groups}&limit=${limit}&offset=${offset}`;
+  return get(token, endpoint);
+};
+
+export const getArtistTopTracks = async (token: string, artistId: string) => {
+  const endpoint = `/artists/${artistId}/top-tracks?country=from_token`;
+  return get(token, endpoint);
+};

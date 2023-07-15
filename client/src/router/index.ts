@@ -6,6 +6,7 @@ import DashboardView from "@/views/DashboardView.vue";
 import SearchView from "@/views/SearchView.vue";
 import TrackView from "@/views/TrackView.vue";
 import AlbumView from "@/views/AlbumView.vue";
+import ArtistView from "@/views/ArtistView.vue";
 import UnaddedTracksView from "@/views/UnaddedTracksView.vue";
 import CallbackView from "@/views/CallbackView.vue";
 
@@ -41,6 +42,13 @@ const router = createRouter({
       path: "/album/:id",
       name: "album",
       component: AlbumView,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/artist/:id",
+      name: "artist",
+      component: ArtistView,
       props: true,
       meta: { requiresAuth: true },
     },

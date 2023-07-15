@@ -1,6 +1,9 @@
 <template>
   <div class="lg:flex flex-row gap-x-16 justify-center px-6">
-    <div v-if="album" class="sm:flex flex-row gap-x-4">
+    <div
+      v-if="album && tracks"
+      class="sm:flex flex-row gap-x-4 lg:w-1/2 max-lg:max-w-lg"
+    >
       <div class="mb-4">
         <img :src="getLargestImage(album.images).url" class="w-56 h-56 mb-4" />
         <a
@@ -14,9 +17,10 @@
         <div class="mb-4">
           <p class="text-xl">{{ album.name }}</p>
           <div class="flex flex-row items-center">
-            <p class="text-lg text-gray-300">
-              {{ getArtistString(album.artists) }}
-            </p>
+            <p
+              class="text-lg text-gray-300"
+              v-html="getArtistString(album.artists, true)"
+            ></p>
           </div>
           <a
             class="sm:hidden block text-center w-56 mt-1 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
@@ -45,7 +49,6 @@
     <VFeatures
       v-if="averageTrackFeatures"
       :trackFeatures="averageTrackFeatures"
-      class="max-w-sm lg:w-1/4"
     />
   </div>
 

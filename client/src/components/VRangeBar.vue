@@ -2,7 +2,7 @@
   <div class="mb-2">
     <div class="flex justify-between mb-1">
       <span class="text-md font-medium text-gray-100">{{ label }}</span>
-      <span class="text-sm font-medium text-gray-100">{{
+      <span class="text-sm text-gray-100">{{
         parseFloat(value.toFixed(5))
       }}</span>
     </div>

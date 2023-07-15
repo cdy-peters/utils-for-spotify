@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="max-w-sm lg:w-1/2">
+    <p v-if="label" class="text-lg font-semibold">{{ label }}</p>
     <div class="flex justify-between mb-2">
       <p class="text-md font-medium text-gray-100">Feature</p>
       <p class="text-sm font-medium text-gray-100">Value (0 - 1)</p>
@@ -60,6 +61,9 @@
 import VRangeBar from "@/components/VRangeBar.vue";
 
 defineProps({
+  label: {
+    type: String,
+  },
   trackFeatures: {
     type: Object,
     required: true,
