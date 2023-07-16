@@ -76,7 +76,8 @@
   </div>
 
   <div v-if="tracks" class="lg:mx-8 px-6">
-    <p class="text-sm">Album</p>
+    <p v-if="album.album_type === 'album'" class="text-sm">Album</p>
+    <p v-else class="text-sm">Single</p>
     <p
       class="text-xl font-semibold hover:underline hover:cursor-pointer"
       @click="selectedTrack = null"
@@ -92,7 +93,7 @@
         v-for="track in tracks"
         :key="track.id"
         :class="
-          selectedTrack === track.id
+          selectedTrack && selectedTrack.id === track.id
             ? 'bg-gray-700'
             : 'hover:bg-gray-700 cursor-pointer'
         "
@@ -147,9 +148,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  track: {
+    type: String,
+    default: null,
+  },
 });
-
-const params = new URLSearchParams(window.location.search);
 
 const album = ref<any>(null);
 const tracks = ref<any>(null);
@@ -195,8 +198,8 @@ onMounted(async () => {
 
   averageTrackFeatures.value = getAverageFeatures(tracksFeatures.value);
 
-  if (params.get("track")) {
-    const trackId = params.get("track");
+  if (props.track) {
+    const trackId = props.track;
     setSelectedTrack(trackId!);
   }
 });

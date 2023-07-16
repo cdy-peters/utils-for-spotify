@@ -1,8 +1,8 @@
 <template>
-  <a
+  <router-link
     v-for="album in albums"
     :key="album.id"
-    :href="`/album/${album.id}`"
+    :to="`/album/${album.id}`"
     class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <img
@@ -17,7 +17,7 @@
         {{ album.artists }}
       </p>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script setup lang="ts">

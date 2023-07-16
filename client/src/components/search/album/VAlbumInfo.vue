@@ -4,10 +4,6 @@
     {{ dateToString(album.release_date) }}
   </p>
   <p class="text-md">
-    <span class="font-semibold">Tracks:</span>
-    {{ album.total_tracks }}
-  </p>
-  <p class="text-md">
     <span class="font-semibold">Duration:</span>
     {{ durationToString(totalDuration) }}
   </p>
