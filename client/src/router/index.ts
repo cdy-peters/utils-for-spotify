@@ -32,14 +32,14 @@ const router = createRouter({
     },
     {
       path: "/album/:id",
-      name: "album",
+      name: "search-album",
       component: AlbumView,
       props: (route) => ({ id: route.params.id, track: route.query.track }),
       meta: { requiresAuth: true },
     },
     {
       path: "/artist/:id",
-      name: "artist",
+      name: "search-artist",
       component: ArtistView,
       props: true,
       meta: { requiresAuth: true },

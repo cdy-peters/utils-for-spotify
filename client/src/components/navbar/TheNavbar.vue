@@ -153,6 +153,7 @@ const logout = () => {
 };
 
 const getNavItemClass = (item: string) => {
+  const currRoute = router.currentRoute.value;
   return [
     "rounded-md",
     "px-3",
@@ -160,13 +161,14 @@ const getNavItemClass = (item: string) => {
     "text-sm",
     "font-semibold",
     "leading-6",
-    router.currentRoute.value.name === item.toLowerCase()
+    String(currRoute.name).includes(item.toLowerCase())
       ? "bg-green text-black"
       : "text-gray-200 hover:bg-green-hover hover:text-white",
   ];
 };
 
 const getMobileNavItemClass = (item: string) => {
+  const currRoute = router.currentRoute.value;
   return [
     "-mx-3",
     "block",
@@ -176,7 +178,7 @@ const getMobileNavItemClass = (item: string) => {
     "text-base",
     "font-semibold",
     "leading-7",
-    router.currentRoute.value.name === item.toLowerCase()
+    String(currRoute.name).includes(item.toLowerCase())
       ? "bg-green text-black"
       : "text-gray-200 hover:bg-green-hover hover:text-white",
   ];
