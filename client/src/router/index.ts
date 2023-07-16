@@ -4,7 +4,6 @@ import { useAuthStore } from "@/stores/auth";
 import LandingView from "@/views/LandingView.vue";
 import DashboardView from "@/views/DashboardView.vue";
 import SearchView from "@/views/SearchView.vue";
-import TrackView from "@/views/TrackView.vue";
 import AlbumView from "@/views/AlbumView.vue";
 import ArtistView from "@/views/ArtistView.vue";
 import UnaddedTracksView from "@/views/UnaddedTracksView.vue";
@@ -29,13 +28,6 @@ const router = createRouter({
       path: "/search",
       name: "search",
       component: SearchView,
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/track/:id",
-      name: "track",
-      component: TrackView,
-      props: true,
       meta: { requiresAuth: true },
     },
     {

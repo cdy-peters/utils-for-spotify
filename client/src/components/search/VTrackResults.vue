@@ -1,8 +1,8 @@
 <template>
-  <a
+  <router-link
     v-for="track in tracks"
     :key="track.id"
-    :href="`/track/${track.id}`"
+    :to="`/album/${track.album.id}?track=${track.id}`"
     class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <img
@@ -33,7 +33,7 @@
         </p>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script setup lang="ts">
@@ -58,6 +58,7 @@ watch(
 const updateTracks = (results: any[]) => {
   tracks.value = results.map((track) => ({
     id: track.id,
+    album: track.album,
     type: track.type,
     image: getSmallestImage(track.album.images).url,
     name: track.name,

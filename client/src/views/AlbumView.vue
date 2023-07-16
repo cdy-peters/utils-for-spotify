@@ -7,54 +7,82 @@
       <div class="mb-4">
         <img :src="getLargestImage(album.images).url" class="w-56 h-56 mb-4" />
         <a
-          class="max-sm:hidden block text-center w-56 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
-          :href="album.external_urls.spotify"
+          class="block text-center w-56 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
+          :href="
+            selectedTrack
+              ? selectedTrack.external_urls.spotify
+              : album.external_urls.spotify
+          "
           >Open in Spotify</a
         >
       </div>
 
       <div class="mb-8">
         <div class="mb-4">
-          <p class="text-xl">{{ album.name }}</p>
-          <div class="flex flex-row items-center">
-            <p
-              class="text-lg text-gray-200"
-              v-html="getArtistString(album.artists, true)"
-            ></p>
-          </div>
-          <a
-            class="sm:hidden block text-center w-56 mt-1 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
-            :href="album.external_urls.spotify"
-            >Open in Spotify</a
-          >
+          <template v-if="selectedTrack">
+            <p class="text-xl">{{ selectedTrack.name }}</p>
+            <div class="flex flex-row items-center">
+              <svg
+                v-if="selectedTrack.explicit"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="text-gray-300 mr-2"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M2.5 0A2.5 2.5 0 0 0 0 2.5v11A2.5 2.5 0 0 0 2.5 16h11a2.5 2.5 0 0 0 2.5-2.5v-11A2.5 2.5 0 0 0 13.5 0h-11Zm4.326 10.88H10.5V12h-5V4.002h5v1.12H6.826V7.4h3.457v1.073H6.826v2.408Z"
+                />
+              </svg>
+
+              <p
+                class="text-lg text-gray-200"
+                v-html="getArtistString(selectedTrack.artists, true)"
+              ></p>
+            </div>
+          </template>
+          <template v-else>
+            <p class="text-xl">{{ album.name }}</p>
+
+            <div class="flex flex-row items-center">
+              <p
+                class="text-lg text-gray-200"
+                v-html="getArtistString(album.artists, true)"
+              ></p>
+            </div>
+          </template>
         </div>
 
-        <div>
-          <p class="text-md">
-            <span class="font-semibold">Release date:</span>
-            {{ dateToString(album.release_date) }}
-          </p>
-          <p class="text-md">
-            <span class="font-semibold">Tracks:</span>
-            {{ album.total_tracks }}
-          </p>
-          <p class="text-md">
-            <span class="font-semibold">Duration:</span>
-            {{ durationToString(totalDuration) }}
-          </p>
-        </div>
+        <VTrackInfo
+          v-if="selectedTrack"
+          :album="album"
+          :track="selectedTrack"
+          :trackFeatures="selectedTrack.features"
+        />
+        <VAlbumInfo v-else :album="album" :total-duration="totalDuration" />
       </div>
     </div>
 
     <VFeatures
       v-if="averageTrackFeatures"
-      label="Average features of album tracks"
-      :trackFeatures="averageTrackFeatures"
+      :label="
+        selectedTrack ? 'Track features' : 'Average features of album tracks'
+      "
+      :trackFeatures="
+        selectedTrack ? selectedTrack.features : averageTrackFeatures
+      "
     />
   </div>
 
   <div v-if="tracks" class="lg:mx-8 px-6">
-    <p class="text-xl font-semibold">Track List</p>
+    <p class="text-sm">Album</p>
+    <p
+      class="text-xl font-semibold hover:underline hover:cursor-pointer"
+      @click="selectedTrack = null"
+    >
+      {{ album.name }}
+    </p>
     <table class="w-full">
       <tr>
         <th class="w-12"></th>
@@ -63,8 +91,12 @@
       <tr
         v-for="track in tracks"
         :key="track.id"
-        class="hover:bg-gray-700 cursor-pointer"
-        @click="$router.push(`/track/${track.id}`)"
+        :class="
+          selectedTrack === track.id
+            ? 'bg-gray-700'
+            : 'hover:bg-gray-700 cursor-pointer'
+        "
+        @click="setSelectedTrack(track.id)"
       >
         <td class="text-lg text-gray-200 text-center rounded-s-md">
           {{ track.track_number }}
@@ -102,11 +134,11 @@ import { getAlbum, getNextAlbumTracks, getTracksFeatures } from "@/utils/api";
 import {
   getLargestImage,
   getArtistString,
-  durationToString,
-  dateToString,
   getAverageFeatures,
 } from "@/utils/spotify";
 import VFeatures from "@/components/VFeatures.vue";
+import VTrackInfo from "@/components/search/album/VTrackInfo.vue";
+import VAlbumInfo from "@/components/search/album/VAlbumInfo.vue";
 
 const authStore = useAuthStore();
 
@@ -117,11 +149,14 @@ const props = defineProps({
   },
 });
 
+const params = new URLSearchParams(window.location.search);
+
 const album = ref<any>(null);
 const tracks = ref<any>(null);
 const totalDuration = ref<number>(0);
 const tracksFeatures = ref<{ id: string; features: any }[]>([]);
 const averageTrackFeatures = ref<any>(null);
+const selectedTrack = ref<any>(null);
 
 onMounted(async () => {
   const data = await getAlbum(authStore.getAccessToken, props.id);
@@ -159,5 +194,20 @@ onMounted(async () => {
   }
 
   averageTrackFeatures.value = getAverageFeatures(tracksFeatures.value);
+
+  if (params.get("track")) {
+    const trackId = params.get("track");
+    setSelectedTrack(trackId!);
+  }
 });
+
+const setSelectedTrack = (id: string) => {
+  selectedTrack.value = tracks.value.find((track: any) => track.id === id);
+  const trackFeatures = tracksFeatures.value.find(
+    (track: any) => track.id === id
+  );
+  if (trackFeatures) {
+    selectedTrack.value.features = trackFeatures.features;
+  }
+};
 </script>

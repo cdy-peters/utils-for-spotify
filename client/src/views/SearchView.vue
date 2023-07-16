@@ -45,9 +45,9 @@ import { searchForItem } from "@/utils/api";
 import { useAuthStore } from "@/stores/auth";
 import VSpinner from "@/components/VSpinner.vue";
 import VTypeButton from "@/components/search/VTypeButton.vue";
-import VTrackList from "@/components/search/VTrackList.vue";
-import VAlbumList from "@/components/search/VAlbumList.vue";
-import VArtistList from "@/components/search/artist/VArtistList.vue";
+import VTrackList from "@/components/search/VTrackResults.vue";
+import VAlbumList from "@/components/search//album/VAlbumResults.vue";
+import VArtistList from "@/components/search/artist/VArtistResults.vue";
 
 const authStore = useAuthStore();
 
