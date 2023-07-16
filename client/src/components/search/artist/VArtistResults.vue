@@ -1,8 +1,8 @@
 <template>
-  <a
+  <router-link
     v-for="artist in artists"
     :key="artist.id"
-    :href="`/artist/${artist.id}`"
+    :to="`/artist/${artist.id}`"
     class="flex flex-row items-center rounded-md px-2 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <div
@@ -25,7 +25,7 @@
     <div>
       <p class="text-xl">{{ artist.name }}</p>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script setup lang="ts">

@@ -26,7 +26,7 @@
           </svg>
         </div>
         <a
-          class="max-sm:hidden block text-center w-56 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
+          class="block text-center w-56 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
           :href="artist.external_urls.spotify"
           >Open in Spotify</a
         >
@@ -38,27 +38,9 @@
           <p class="text-lg text-gray-200">
             {{ formatNumber(artist.followers.total) }} followers
           </p>
-          <a
-            class="sm:hidden block text-center w-56 mt-1 text-md font-semibold leading-6 px-3 py-2 rounded-md bg-green text-black hover:bg-green-hover hover:text-white"
-            :href="artist.external_urls.spotify"
-            >Open in Spotify</a
-          >
         </div>
 
-        <div>
-          <p class="text-md" v-if="artist.genres.length">
-            <span class="font-semibold">Genres:</span>
-            {{ genresToString(artist.genres) }}
-          </p>
-          <p class="text-md">
-            <span class="font-semibold">Albums:</span>
-            {{ albums.length }}
-          </p>
-          <p class="text-md">
-            <span class="font-semibold">Singles:</span>
-            {{ singles.length }}
-          </p>
-        </div>
+        <VArtistInfo :artist="artist" :albums="albums" :singles="singles" />
       </div>
     </div>
 
@@ -69,7 +51,7 @@
     />
   </div>
 
-  <div class="lg:mx-8 px-6">
+  <div v-if="topTracks" class="lg:mx-8 px-6">
     <div class="flex justify-between">
       <p class="text-xl font-semibold">Releases</p>
       <VReleasesDropdown
@@ -77,11 +59,15 @@
         :dropdown-handler="dropdownHandler"
       />
     </div>
-    <VAlbumReleases v-if="shownReleases === 'albums'" :albums="albums" />
+    <VTrackReleases
+      v-if="shownReleases === 'Top Tracks'"
+      :tracks="topTracks.tracks"
+    />
     <VSingleReleases
-      v-else-if="shownReleases === 'singles'"
+      v-else-if="shownReleases === 'Singles and EPs'"
       :singles="singles"
     />
+    <VAlbumReleases v-else-if="shownReleases === 'Albums'" :albums="albums" />
   </div>
 </template>
 
@@ -98,12 +84,13 @@ import {
   getLargestImage,
   getAverageFeatures,
   formatNumber,
-  genresToString,
 } from "@/utils/spotify";
 import VFeatures from "@/components/VFeatures.vue";
 import VReleasesDropdown from "@/components/search/artist/VReleasesDropdown.vue";
-import VAlbumReleases from "@/components/search/artist/VAlbumReleases.vue";
+import VTrackReleases from "@/components/search/artist/VTrackReleases.vue";
 import VSingleReleases from "@/components/search/artist/VSingleReleases.vue";
+import VAlbumReleases from "@/components/search/artist/VAlbumReleases.vue";
+import VArtistInfo from "@/components/search/artist/VArtistInfo.vue";
 
 const authStore = useAuthStore();
 
@@ -120,7 +107,7 @@ const albums = ref<any>(null);
 const topTracks = ref<any>(null);
 const tracksFeatures = ref<{ id: string; features: any }[]>([]);
 const averageTrackFeatures = ref<any>(null);
-const shownReleases = ref("singles");
+const shownReleases = ref("Top Tracks");
 
 onMounted(async () => {
   let data: any;
@@ -169,11 +156,6 @@ onMounted(async () => {
 });
 
 const dropdownHandler = (type: string) => {
-  type = type.toLowerCase();
-  if (type === "singles") {
-    shownReleases.value = "singles";
-  } else if (type === "albums") {
-    shownReleases.value = "albums";
-  }
+  shownReleases.value = type;
 };
 </script>

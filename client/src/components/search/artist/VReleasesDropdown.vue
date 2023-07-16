@@ -4,7 +4,7 @@
       <MenuButton
         class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-none px-3 py-2 text-sm font-semibold text-gray-200 hover:text-gray-100"
       >
-        {{ shownReleases.charAt(0).toUpperCase() + shownReleases.slice(1) }}
+        {{ shownReleases }}
         <ChevronDownIcon
           class="-mr-1 h-5 w-5 text-inherit"
           aria-hidden="true"
@@ -21,14 +21,14 @@
       leave-to-class="transform opacity-0 scale-95"
     >
       <MenuItems
-        class="absolute right-0 z-10 w-32 origin-top-right rounded-sm p-1 bg-gray-700 focus:outline-none"
+        class="absolute right-0 z-10 w-40 origin-top-right rounded-sm p-1 bg-gray-700 focus:outline-none"
       >
         <div v-for="option in options" :key="option.name">
           <MenuItem>
             <a
               :class="[
-                option.name.toLowerCase() == shownReleases ? 'text-green' : '',
-                'block px-4 py-2 text-sm text-gray-100 hover:bg-gray-500 rounded-sm',
+                option.name == shownReleases ? 'text-green' : '',
+                'block px-4 py-2 text-sm text-gray-100 hover:bg-gray-500 rounded-sm cursor-default',
               ]"
               @click="dropdownHandler(option.name)"
             >
@@ -45,7 +45,11 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 
-const options = [{ name: "Albums" }, { name: "Singles" }];
+const options = [
+  { name: "Top Tracks" },
+  { name: "Singles and EPs" },
+  { name: "Albums" },
+];
 
 defineProps({
   shownReleases: {

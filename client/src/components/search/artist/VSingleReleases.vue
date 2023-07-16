@@ -1,8 +1,8 @@
 <template>
-  <a
+  <router-link
     v-for="single in singles"
     :key="single.id"
-    :href="`/album/${single.id}`"
+    :to="`/album/${single.id}`"
     class="flex flex-row items-center rounded-md px-3 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <img
@@ -33,7 +33,7 @@
         </p>
       </div>
     </div>
-  </a>
+  </router-link>
 </template>
 
 <script setup lang="ts">

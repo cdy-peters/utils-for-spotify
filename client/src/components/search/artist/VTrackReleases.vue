@@ -1,21 +1,21 @@
 <template>
   <router-link
-    v-for="album in albums"
-    :key="album.id"
-    :to="`/album/${album.id}`"
+    v-for="track in tracks"
+    :key="track.id"
+    :to="`/album/${track.album.id}?track=${track.id}`"
     class="flex flex-row items-center rounded-md px-3 py-1 hover:bg-gray-700 cursor-pointer"
   >
     <img
-      :src="getSmallestImage(album.images).url"
+      :src="getSmallestImage(track.album.images).url"
       class="w-10 h-10 mr-3"
       alt="Album cover"
       loading="lazy"
     />
     <div>
-      <p class="text-lg">{{ album.name }}</p>
+      <p class="text-lg">{{ track.name }}</p>
       <div class="flex flex-row items-center">
         <svg
-          v-if="album.explicit"
+          v-if="track.explicit"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -29,7 +29,7 @@
         </svg>
 
         <p class="text-md text-gray-200">
-          {{ getArtistString(album.artists) }}
+          {{ getArtistString(track.artists) }}
         </p>
       </div>
     </div>
@@ -40,6 +40,6 @@
 import { getArtistString, getSmallestImage } from "@/utils/spotify";
 
 defineProps<{
-  albums: any;
+  tracks: any;
 }>();
 </script>
