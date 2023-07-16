@@ -124,9 +124,10 @@ import MobileNavbarDropdown from "./MobileNavbarDropdown.vue";
 import NavbarLogo from "./NavbarLogo.vue";
 import TheFooter from "../TheFooter.vue";
 
-const products = [
+const tools = [
   {
     name: "Unadded Tracks",
+    routeName: "unadded-tracks",
     description:
       "Get your liked tracks that haven't been added to a playlist yet.",
     href: "/unadded-tracks",
@@ -137,7 +138,7 @@ const products = [
 const navigation = [
   { name: "Dashboard", href: "/dashboard" },
   { name: "Search", href: "/search" },
-  { name: "Tools", dropdown: products },
+  { name: "Tools", dropdown: tools },
 ];
 
 const mobileMenuOpen = ref(false);

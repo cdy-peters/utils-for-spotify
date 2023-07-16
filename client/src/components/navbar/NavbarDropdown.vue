@@ -28,7 +28,7 @@
             <div
               class="flex h-11 w-11 flex-none items-center justify-center rounded-lg"
               :class="
-                subItem.name.toLowerCase() == router.currentRoute.value.name
+                subItem.routeName == router.currentRoute.value.name
                   ? 'bg-green text-black'
                   : 'bg-gray-400 text-gray-100 group-hover:bg-green-hover'
               "
@@ -61,8 +61,15 @@ import router from "@/router";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 
+defineProps({
+  item: {
+    type: Object,
+    required: true,
+  },
+});
+
 const getNavItemClass = (dropdown: any) => {
-  const dropdownNames = dropdown.map((item: any) => item.name.toLowerCase());
+  const dropdownNames = dropdown.map((item: any) => item.routeName);
 
   return [
     "flex",
@@ -78,16 +85,5 @@ const getNavItemClass = (dropdown: any) => {
       ? "bg-green text-black"
       : "text-gray-200 hover:bg-green-hover hover:text-white",
   ];
-};
-</script>
-
-<script lang="ts">
-export default {
-  props: {
-    item: {
-      type: Object,
-      required: true,
-    },
-  },
 };
 </script>
