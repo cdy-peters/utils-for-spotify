@@ -44,6 +44,9 @@ export const getArtistString = (artists: any[], anchor: boolean = false) => {
   if (anchor) {
     return artists
       .map((artist) => {
+        if (artist.id === "0LyfQWJT6nXafLPZqxe9Of") {
+          return `<p>Various Artists</p>`;
+        }
         return `<a href="/artist/${artist.id}" class="hover:text-gray-100 cursor-pointer">${artist.name}</a>`;
       })
       .join(", ");

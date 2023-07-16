@@ -77,6 +77,9 @@
 
   <div v-if="tracks" class="lg:mx-8 px-6">
     <p v-if="album.album_type === 'album'" class="text-sm">Album</p>
+    <p v-else-if="album.album_type === 'compilation'" class="text-sm">
+      Compilation
+    </p>
     <p v-else class="text-sm">Single</p>
     <p
       class="text-xl font-semibold hover:underline hover:cursor-pointer"
