@@ -83,7 +83,7 @@
     <p v-else class="text-sm">Single</p>
     <p
       class="text-xl font-semibold hover:underline hover:cursor-pointer"
-      @click="selectedTrack = null"
+      @click="$router.replace(`/album/${album.id}`)"
     >
       {{ album.name }}
     </p>
@@ -100,7 +100,7 @@
             ? 'bg-gray-700'
             : 'hover:bg-gray-700 cursor-pointer'
         "
-        @click="setSelectedTrack(track.id)"
+        @click="$router.replace(`/album/${album.id}?track=${track.id}`)"
       >
         <td class="text-lg text-gray-200 text-center rounded-s-md">
           {{ track.track_number }}
@@ -132,7 +132,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { getAlbum, getNextAlbumTracks, getTracksFeatures } from "@/utils/api";
 import {
@@ -206,6 +206,17 @@ onMounted(async () => {
     setSelectedTrack(trackId!);
   }
 });
+
+watch(
+  () => props.track,
+  (trackId) => {
+    if (trackId) {
+      setSelectedTrack(trackId);
+    } else {
+      selectedTrack.value = null;
+    }
+  }
+);
 
 const setSelectedTrack = (id: string) => {
   selectedTrack.value = tracks.value.find((track: any) => track.id === id);
